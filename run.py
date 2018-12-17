@@ -10,6 +10,8 @@ from namesilo import NameSilo
 
 # DOMAINS TO SETUP
 DOMAINS_FILE = "domains.txt"
+# FILE TO SAVE INSTANCE DETAILS
+INSTANCES_FILE = "instances.txt"
 
 # CATCH-ALL EMAIL DETAILS
 FWD_TO_EMAIL = "YOUR_EMAIL"
@@ -151,9 +153,13 @@ def main(domain):
     setup_ssh(main_ip, domain, "root", default_password)
     print("# Getting Wordpress login details")
     wordpress_user, wordpress_pass = parse_wordpress_login(SUBID)
-    print(
+    inform = (
         "---\nInstance {} is now ready!\n\nDomain: {}\nWP User: {}\nWP Pass: {}"
+        "\n---\n"
         .format(SUBID, domain, wordpress_user, wordpress_pass))
+    print(inform)
+    with open(INSTANCES_FILE, 'w') as f:
+        f.write(inform)
 
 
 domains = open(DOMAINS_FILE).read().strip().split("\n")
